@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Places Recommender</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- AUTH SCREEN (shown first) -->
+  <div id="auth-screen">
+    <h1>🗺️ Smart Places</h1>
+    <div class="auth-box">
+
+      <!-- Tab buttons -->
+      <div class="tabs">
+        <button class="tab active" onclick="showTab('login')">Login</button>
+        <button class="tab" onclick="showTab('register')">Register</button>
+      </div>
+
+      <!-- Login form -->
+      <div id="login-form">
+        <input type="email" id="login-email" placeholder="Email">
+        <input type="password" id="login-password" placeholder="Password">
+        <button class="primary-btn" onclick="handleLogin()">Login</button>
+        <p id="login-error" class="error-msg"></p>
+      </div>
+
+      <!-- Register form -->
+      <div id="register-form" style="display:none">
+        <input type="text" id="reg-name" placeholder="Your name">
+        <input type="email" id="reg-email" placeholder="Email">
+        <input type="password" id="reg-password" placeholder="Password">
+        <button class="primary-btn" onclick="handleRegister()">Create Account</button>
+        <p id="reg-error" class="error-msg"></p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- MAIN APP SCREEN (shown after login) -->
+  <div id="app-screen" style="display:none">
+
+    <!-- Top bar -->
+    <div class="topbar">
+      <h1>🗺️ Smart Places</h1>
+      <div class="user-info">
+        <span id="welcome-msg"></span>
+        <button class="logout-btn" onclick="handleLogout()">Logout</button>
+      </div>
+    </div>
+
+    <!-- Controls -->
+    <div class="controls">
+      <label>I want to:
+        <select id="mood">
+          <option value="casual">Casual hangout</option>
+          <option value="date">Date night</option>
+          <option value="work">Work / study</option>
+          <option value="quick bite">Quick bite</option>
+        </select>
+      </label>
+      <button class="primary-btn" onclick="getRecommendations()">
+        Find Places
+      </button>
+      <button class="secondary-btn" onclick="showHistory()">
+        My History
+      </button>
+      <button class="secondary-btn" onclick="trainModel()">
+        🧠 Train ML Model
+      </button>
+    </div>
+
+    <!-- Status message -->
+    <p id="status-msg" class="status-msg"></p>
+
+    <!-- Results grid -->
+    <div id="results"></div>
+
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

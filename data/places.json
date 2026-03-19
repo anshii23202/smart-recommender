@@ -1,0 +1,22 @@
+[
+  {
+    "id": "1",
+    "name": "Blue Tokai Coffee",
+    "category": "cafe",
+    "lat": 28.6139,
+    "lon": 77.2090,
+    "rating": 4.5,
+    "tags": ["cafe", "wifi", "quiet"],
+    "address": "Connaught Place, New Delhi"
+  },
+  {
+    "id": "2",
+    "name": "Indian Accent",
+    "category": "restaurant",
+    "lat": 28.5921,
+    "lon": 77.2089,
+    "rating": 4.8,
+    "tags": ["fine dining", "romantic"],
+    "address": "The Lodhi, New Delhi"
+  }
+]
