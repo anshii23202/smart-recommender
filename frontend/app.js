@@ -96,10 +96,14 @@ async function getRecommendations() {
         user_id: currentUser.user_id
       })
     });
-    const places = await res.json();
+    const data = await res.json();
     status.textContent = '';
+    if (data.weather) {
+        status.textContent = data.weather.weather_tip;
+    }
+    const places = data.places;
 
-    if (places.length === 0) {
+    if (!places || places.length === 0) {
       status.textContent = '😕 No places found nearby. Try a different mood.';
       return;
     }

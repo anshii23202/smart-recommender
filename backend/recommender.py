@@ -1,6 +1,7 @@
 from fetch_places import fetch_nearby_places
 from ml_model import get_recommended_place_ids
 from clustering import assign_clusters, train_kmeans
+from weather import get_weather, get_weather_score
 import math
 
 def haversine(lat1, lon1, lat2, lon2):
@@ -28,12 +29,13 @@ def get_recommendations(lat, lon, mood, user_id, top_n=10):
 
     # Get place IDs that kNN thinks this user will like
     ml_recommended_ids = get_recommended_place_ids(user_id)
+    weather = get_weather(lat, lon)
 
     nearby = []
     for place in PLACES:
         dist = haversine(lat, lon, place['lat'], place['lon'])
         place['distance_km'] = round(dist, 2)
-        place['score']       = compute_score(place, mood, dist, ml_recommended_ids)
+        place['score'] = compute_score(place, mood, dist, ml_recommended_ids, weather['prefer_indoor'])
         nearby.append(place)
 
     nearby.sort(key=lambda x: x['score'], reverse=True)
@@ -42,11 +44,10 @@ def get_recommendations(lat, lon, mood, user_id, top_n=10):
     nearby = assign_clusters(nearby)
     return {
         "places":  nearby[:top_n],
-        "weather": {"weather_tip": ""}   # placeholder until weather is added
+        "weather": {"weather_tip": ""}   
     }
 
-def compute_score(place, mood, distance, ml_recommended_ids=[]):
-    """Score combining rating, proximity, mood match, and ML boost."""
+def compute_score(place, mood, distance, ml_recommended_ids=[], prefer_indoor=False):
     rating_score    = place.get('rating', 3.0) / 5.0
     proximity_score = max(0, 1 - distance / 5)
 
@@ -60,7 +61,7 @@ def compute_score(place, mood, distance, ml_recommended_ids=[]):
     mood_match = any(t in place.get('tags', []) for t in tags)
     mood_score = 0.2 if mood_match else 0.0
 
-    # ML boost — if similar users liked this place, push it higher
-    ml_score = 0.3 if place.get('id') in ml_recommended_ids else 0.0
+    ml_score      = 0.3 if place.get('id') in ml_recommended_ids else 0.0
+    weather_score = get_weather_score(place, prefer_indoor)
 
-    return (rating_score * 0.4) + (proximity_score * 0.3) + mood_score + ml_score
+    return (rating_score * 0.35) + (proximity_score * 0.25) + mood_score + ml_score + weather_score
