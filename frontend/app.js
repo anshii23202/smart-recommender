@@ -127,19 +127,41 @@ async function getRecommendations() {
 
 function displayPlaces(places, mood) {
   const results = document.getElementById('results');
-  results.innerHTML = places.map(p => `
-    <div class="card">
-      <div class="card-header">
-        <h3>${p.name}</h3>
-        <span class="badge">${p.category}</span>
-      </div>
-      <p class="card-meta">📍 ${p.distance_km} km away</p>
-      <p class="card-meta">🏠 ${p.address}</p>
-      <div class="stars" id="stars-${p.id}">
-        <span>Rate: </span>
-        ${[1,2,3,4,5].map(n =>
-          `<span class="star" onclick="ratePlace('${p.id}','${p.name}',${n})">☆</span>`
-        ).join('')}
+
+  // Group places by cluster
+  const clusters = {};
+  places.forEach(p => {
+    const key = p.cluster_name || 'Places';
+    if (!clusters[key]) {
+      clusters[key] = {
+        emoji:  p.cluster_emoji || '📍',
+        places: []
+      };
+    }
+    clusters[key].places.push(p);
+  });
+
+  // Render each cluster as a section
+  results.innerHTML = Object.entries(clusters).map(([name, group]) => `
+    <div class="cluster-section">
+      <h2 class="cluster-title">${group.emoji} ${name}</h2>
+      <div class="cluster-grid">
+        ${group.places.map(p => `
+          <div class="card">
+            <div class="card-header">
+              <h3>${p.name}</h3>
+              <span class="badge">${p.category}</span>
+            </div>
+            <p class="card-meta">📍 ${p.distance_km} km away</p>
+            <p class="card-meta">🏠 ${p.address}</p>
+            <div class="stars" id="stars-${p.id}">
+              <span>Rate: </span>
+              ${[1,2,3,4,5].map(n =>
+                `<span class="star" onclick="ratePlace('${p.id}','${p.name}',${n})">☆</span>`
+              ).join('')}
+            </div>
+          </div>
+        `).join('')}
       </div>
     </div>
   `).join('');

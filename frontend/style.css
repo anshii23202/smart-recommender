@@ -191,3 +191,23 @@ select {
 .star:hover { color: #f59e0b; }
 
 .history-card { grid-column: 1 / -1; max-width: 500px; }
+
+.cluster-section {
+  grid-column: 1 / -1;
+  margin-bottom: 8px;
+}
+
+.cluster-title {
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--color-text-primary, #1a1a1a);
+  margin-bottom: 14px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid #ede9fe;
+}
+
+.cluster-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+}

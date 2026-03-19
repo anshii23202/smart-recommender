@@ -1,5 +1,6 @@
 from fetch_places import fetch_nearby_places
 from ml_model import get_recommended_place_ids
+from clustering import assign_clusters, train_kmeans
 import math
 
 def haversine(lat1, lon1, lat2, lon2):
@@ -36,7 +37,13 @@ def get_recommendations(lat, lon, mood, user_id, top_n=10):
         nearby.append(place)
 
     nearby.sort(key=lambda x: x['score'], reverse=True)
-    return nearby[:top_n]
+    # Train K-Means on these places and assign cluster labels
+    train_kmeans(nearby)
+    nearby = assign_clusters(nearby)
+    return {
+        "places":  nearby[:top_n],
+        "weather": {"weather_tip": ""}   # placeholder until weather is added
+    }
 
 def compute_score(place, mood, distance, ml_recommended_ids=[]):
     """Score combining rating, proximity, mood match, and ML boost."""
