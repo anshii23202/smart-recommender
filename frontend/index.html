@@ -3,9 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Smart Places Recommender</title>
-
-  <!-- Leaflet map CSS -->
+  <title>Spotr — Smart Places</title>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
   <link rel="stylesheet" href="style.css">
 </head>
@@ -13,74 +11,87 @@
 
   <!-- AUTH SCREEN -->
   <div id="auth-screen">
-    <h1>🗺️ Smart Places</h1>
+    <div class="auth-logo">
+      <h1>spotr.</h1>
+      <p>AI-powered places, personalised for you</p>
+    </div>
+
     <div class="auth-box">
       <div class="tabs">
-        <button class="tab active" onclick="showTab('login')">Login</button>
-        <button class="tab" onclick="showTab('register')">Register</button>
+        <button class="tab active" onclick="showTab('login')">Sign in</button>
+        <button class="tab" onclick="showTab('register')">Create account</button>
       </div>
+
       <div id="login-form">
-        <input type="email" id="login-email" placeholder="Email">
+        <input type="email" id="login-email" placeholder="Email address">
         <input type="password" id="login-password" placeholder="Password">
-        <button class="primary-btn" onclick="handleLogin()">Login</button>
+        <button class="primary-btn" onclick="handleLogin()">Sign in →</button>
         <p id="login-error" class="error-msg"></p>
       </div>
+
       <div id="register-form" style="display:none">
         <input type="text" id="reg-name" placeholder="Your name">
-        <input type="email" id="reg-email" placeholder="Email">
-        <input type="password" id="reg-password" placeholder="Password">
-        <button class="primary-btn" onclick="handleRegister()">Create Account</button>
+        <input type="email" id="reg-email" placeholder="Email address">
+        <input type="password" id="reg-password" placeholder="Create password">
+        <button class="primary-btn" onclick="handleRegister()">Get started →</button>
         <p id="reg-error" class="error-msg"></p>
       </div>
     </div>
   </div>
 
-  <!-- MAIN APP SCREEN -->
+  <!-- MAIN APP -->
   <div id="app-screen" style="display:none">
 
     <div class="topbar">
-      <h1>🗺️ Smart Places</h1>
+      <div class="topbar-logo">spotr.</div>
       <div class="user-info">
         <span id="welcome-msg"></span>
-        <button class="logout-btn" onclick="handleLogout()">Logout</button>
+        <button class="logout-btn" onclick="handleLogout()">Sign out</button>
       </div>
     </div>
 
     <div class="controls">
-      <label>I want to:
+      <div>
+        <span class="mood-label">I'm looking for</span>
         <select id="mood">
-          <option value="casual">Casual hangout</option>
-          <option value="date">Date night</option>
-          <option value="work">Work / study</option>
-          <option value="quick bite">Quick bite</option>
+          <option value="casual">🍹 Casual hangout</option>
+          <option value="date">🕯️ Date night</option>
+          <option value="work">💻 Work / study</option>
+          <option value="quick bite">⚡ Quick bite</option>
         </select>
-      </label>
-      <button class="primary-btn" onclick="getRecommendations()">Find Places</button>
-      <button class="secondary-btn" onclick="showHistory()">My History</button>
-      <button class="secondary-btn" onclick="trainModel()">🧠 Train ML</button>
+      </div>
+      <button class="primary-btn" onclick="getRecommendations()" style="align-self:flex-end">
+        Discover →
+      </button>
+      <button class="secondary-btn" onclick="showHistory()" style="align-self:flex-end">
+        History
+      </button>
+      <button class="secondary-btn" onclick="trainModel()" style="align-self:flex-end">
+        🧠 Train ML
+      </button>
     </div>
 
     <p id="status-msg" class="status-msg"></p>
 
-    <!-- View toggle -->
     <div class="view-toggle">
-      <button class="toggle-btn active" id="btn-list" onclick="switchView('list')">☰ List</button>
-      <button class="toggle-btn" id="btn-map" onclick="switchView('map')">🗺️ Map</button>
+      <button class="toggle-btn active" id="btn-list" onclick="switchView('list')">
+        ☰ List
+      </button>
+      <button class="toggle-btn" id="btn-map" onclick="switchView('map')">
+        🗺️ Map
+      </button>
     </div>
 
-    <!-- List view -->
     <div id="list-view">
       <div id="results"></div>
     </div>
 
-    <!-- Map view -->
     <div id="map-view" style="display:none">
       <div id="map"></div>
     </div>
 
   </div>
 
-  <!-- Leaflet JS -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="app.js"></script>
 </body>
